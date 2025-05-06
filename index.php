@@ -55,14 +55,11 @@ $result = $mysqli->query("SELECT * FROM products");
 </head>
 <body>
 <h2>Каталог товаров</h2>
-<a href="admin/login.php">
-            <button style="padding: 8px 16px; font-size: 14px;">Авторизироваться</button>
-</a>
-
-<?php if (isset($_SESSION['success_message'])): ?>
-    <div id="toast" class="toast"><?php echo $_SESSION['success_message']; unset($_SESSION['success_message']); ?></div>
+<?php if (isset($_SESSION["user_name"])): ?>
+    <p>Вітаємо, <?php echo htmlspecialchars($_SESSION["user_name"]); ?>! <a href="admin/logout.php">Вийти</a></p>
+<?php else: ?>
+    <p><a href="admin/login.php"><button style="padding: 8px 16px; font-size: 14px;">Авторизироваться</button></a></p>
 <?php endif; ?>
-
 
 <?php while ($row = $result->fetch_assoc()): ?>
     <div style="border: 1px solid #ccc; margin: 10px; padding: 10px;">

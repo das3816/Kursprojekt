@@ -1,76 +1,67 @@
 <?php
-session_start();  // Для работы с сессиями (сессия нужна для авторизации)
+session_start();
+require_once '../includes/db.php';
 
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    if (isset($_POST['username']) && isset($_POST['password'])) {
-        // Подключение к базе данных
-        require_once '../includes/db.php';  // Путь к файлу подключения к базе
+$error = '';
 
-        // Получаем данные из формы
-        $username = $_POST['username'];
-        $password = $_POST['password'];
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $email = trim($_POST["email"]);
+    $password = $_POST["password"];  // Обычный пароль, без хеширования
 
-        // Получаем пользователя по имени
-        $sql = "SELECT * FROM users WHERE username = ?";
-        $stmt = $mysqli->prepare($sql);
-        $stmt->bind_param('s', $username);
-        $stmt->execute();
-        $result = $stmt->get_result();
+    $stmt = $mysqli->prepare("SELECT id, name, email, password, role FROM users WHERE email = ?");
+    $stmt->bind_param("s", $email);
+    $stmt->execute();
+    $stmt->store_result();
 
-        // Проверяем, существует ли пользователь с таким логином
-        if ($result->num_rows > 0) {
-            $user = $result->fetch_assoc();
+    if ($stmt->num_rows == 1) {
+        $stmt->bind_result($id, $name, $email_db, $stored_password, $role);
+        $stmt->fetch();
 
-            // Проверяем, совпадает ли введённый пароль с хэшированным паролем
-            if (password_verify($password, $user['password'])) {
-                // Успешная авторизация
-                $_SESSION['user_id'] = $user['id'];
-                $_SESSION['username'] = $user['username'];
-                $_SESSION['role'] = $user['role'];
+        // Сравниваем обычный пароль с тем, что хранится в базе данных
+        if ($password === $stored_password) {
+            $_SESSION["user_id"] = $id;
+            $_SESSION["user_name"] = $name;
+            $_SESSION["user_email"] = $email_db;
+            $_SESSION["user_role"] = $role;
+            $_SESSION['last_activity'] = time(); // для авто-логаута
 
-                // Перенаправление на страницу администратора или главную
-                header('Location: dashboard.php');  // Перенаправляем на главную страницу
-                exit;
-            } else {
-                // Если пароль неверный
-                $error = "Неправильный логин или пароль";
-            }
+            // Перенаправляем на index.php в корневой папке проекта
+            header("Location: /grizetka_project/index.php");
+            exit;
         } else {
-            // Если пользователя с таким логином не существует
-            $error = "Неправильный логин или пароль";
+            $error = "Невірний пароль.";
         }
     } else {
-        // Если нет данных в POST (не отправлена форма)
-        $error = "Заполните все поля.";
+        $error = "Користувача з таким email не існує.";
     }
-}
 
+    $stmt->close();
+}
 ?>
 
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="uk">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Вход</title>
+    <title>Вхід</title>
 </head>
 <body>
+    <h2>Вхід до системи</h2>
 
-    <h2>Авторизация</h2>
-
-    <?php if (isset($error)): ?>
-        <p style="color: red;"><?php echo $error; ?></p>
+    <?php if ($error): ?>
+        <p style="color:red;"><?php echo $error; ?></p>
     <?php endif; ?>
 
-    <form method="POST" action="login.php">
-        <label for="username">Логин:</label>
-        <input type="text" id="username" name="username" required><br><br>
+    <form method="POST" action="">
+        <label>Email:</label><br>
+        <input type="email" name="email" required><br><br>
 
-        <label for="password">Пароль:</label>
-        <input type="password" id="password" name="password" required><br><br>
+        <label>Пароль:</label><br>
+        <input type="password" name="password" required><br><br>
 
-        <button type="submit">Войти</button>
+        <button type="submit">Увійти</button>
     </form>
 
+    <p>Ще не маєте облікового запису? <a href="register.php">Зареєструватися</a></p>
 </body>
 </html>
