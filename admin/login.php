@@ -19,14 +19,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         // Сравниваем обычный пароль с тем, что хранится в базе данных
         if ($password === $stored_password) {
+            // Записываем данные в сессию
             $_SESSION["user_id"] = $id;
             $_SESSION["user_name"] = $name;
             $_SESSION["user_email"] = $email_db;
             $_SESSION["user_role"] = $role;
             $_SESSION['last_activity'] = time(); // для авто-логаута
 
-            // Перенаправляем на index.php в корневой папке проекта
-            header("Location: /grizetka_project/index.php");
+            // Перенаправление в зависимости от роли
+            if ($role == 'admin') {
+                header("Location: /grizetka_project/index.php");  // Если администратор, переходим в админпанель
+            } else {
+                header("Location: /grizetka_project/index.php");  // Для обычного пользователя на главную
+            }
             exit;
         } else {
             $error = "Невірний пароль.";

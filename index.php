@@ -3,6 +3,15 @@ session_start();
 require_once 'includes/db.php';
 
 $result = $mysqli->query("SELECT * FROM products");
+
+// Проверяем, авторизован ли пользователь
+if (!isset($_SESSION['user_id'])) {
+    header("Location: /grizetka_project/admin/login.php");  // Если не авторизован, перенаправляем на страницу входа
+    exit;
+}
+
+// Получаем роль пользователя
+$user_role = $_SESSION['user_role'];
 ?>
 
 <!DOCTYPE html>
@@ -60,6 +69,17 @@ $result = $mysqli->query("SELECT * FROM products");
 <?php else: ?>
     <p><a href="admin/login.php"><button style="padding: 8px 16px; font-size: 14px;">Авторизироваться</button></a></p>
 <?php endif; ?>
+
+ <!-- Выводим ссылку/кнопку в зависимости от роли -->
+    <?php if ($user_role == 'admin'): ?>
+        <a href="admin/dashboard.php">
+            <button>Перейти до адмін панелі</button>
+        </a>
+    <?php else: ?>
+        <a href="/profile.php">
+            <button>Перейти до профілю</button>
+        </a>
+    <?php endif; ?>
 
 <?php while ($row = $result->fetch_assoc()): ?>
     <div style="border: 1px solid #ccc; margin: 10px; padding: 10px;">

@@ -1,6 +1,6 @@
 <?php
 session_start();
-if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'admin') {
+if (!isset($_SESSION['user_role']) || $_SESSION['user_role'] !== 'admin') {
     // Если пользователь не авторизован или не администратор, перенаправляем на страницу входа
     header('Location: login.php');
     exit;
@@ -15,7 +15,7 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'admin') {
     <title>Панель администратора</title>
 </head>
 <body>
-    <h2>Добро пожаловать, <?php echo $_SESSION['username']; ?>!</h2>
+    <h2>Добро пожаловать, <?php echo $_SESSION['user_name']; ?>!</h2>
     <nav>
         <ul>
             <li><a href="add_product.php">Добавить товар</a></li>
