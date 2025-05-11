@@ -1,6 +1,6 @@
 <?php
 session_start();
-if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'admin') {
+if (!isset($_SESSION['user_role']) || $_SESSION['user_role'] !== 'admin') {
     header('Location: login.php');
     exit;
 }
@@ -13,40 +13,46 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $category = $_POST['category'];
     $description = $_POST['description'];
 
-    // Вставка товара в базу данных
+    // Додавання товару до бази даних
     $sql = "INSERT INTO products (name, price, category, description) VALUES (?, ?, ?, ?)";
     $stmt = $mysqli->prepare($sql);
     $stmt->bind_param('ssss', $name, $price, $category, $description);
     $stmt->execute();
 
-    echo "Товар добавлен успешно!";
+    echo "Товар успішно додано!";
 }
 ?>
 
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="uk">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Добавить товар</title>
+    <title>Додати товар</title>
 </head>
 <body>
-    <h2>Добавить товар</h2>
+    <h2>Додати товар</h2>
 
     <form method="POST" action="add_product.php">
-        <label for="name">Название товара:</label>
+        <label for="name">Назва товару:</label>
         <input type="text" id="name" name="name" required><br><br>
 
-        <label for="price">Цена:</label>
+        <label for="price">Ціна:</label>
         <input type="text" id="price" name="price" required><br><br>
 
-        <label for="category">Категория:</label>
+        <label for="category">Категорія:</label>
         <input type="text" id="category" name="category" required><br><br>
 
-        <label for="description">Описание:</label>
+        <label for="description">Опис:</label>
         <textarea id="description" name="description" required></textarea><br><br>
 
-        <button type="submit">Добавить товар</button>
+        <button type="submit">Додати товар</button>
     </form>
+
+    <div style="margin-top: 20px;">
+        <a href="dashboard.php">
+            <button type="button">← Повернутися в кабінет</button>
+        </a>
+    </div>
 </body>
 </html>
