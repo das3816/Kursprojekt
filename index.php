@@ -1,8 +1,29 @@
 <?php
-session_start();
+session_start();  // Убедитесь, что session_start() вызывается только один раз
 require_once 'includes/db.php';
 
-$result = $mysqli->query("SELECT * FROM products");
+$search = isset($_GET['search']) ? $mysqli->real_escape_string($_GET['search']) : '';
+$sort = isset($_GET['sort']) ? $_GET['sort'] : '';
+
+$query = "SELECT * FROM products";
+
+// Если задан поиск
+if ($search) {
+	$query .= " WHERE name LIKE '%$search%' OR description LIKE '%$search%'";
+}
+
+// Сортировка
+if ($sort === 'price_asc') {
+	$query .= " ORDER BY price ASC";
+} elseif ($sort === 'price_desc') {
+	$query .= " ORDER BY price DESC";
+} elseif ($sort === 'name_asc') {
+	$query .= " ORDER BY name ASC";
+} elseif ($sort === 'name_desc') {
+	$query .= " ORDER BY name DESC";
+}
+
+$result = $mysqli->query($query);
 
 // Проверяем, авторизован ли пользователь
 if (!isset($_SESSION['user_id'])) {
@@ -64,8 +85,14 @@ $user_role = $_SESSION['user_role'];
 </head>
 <body>
 	<h2>Каталог товарів</h2>
-	<?php if (isset($_SESSION["user_name"])): ?>
-		<p>Вітаємо, <?php echo htmlspecialchars($_SESSION["user_name"]); ?>! <a href="admin/logout.php">Вийти</a></p>
+	<?php
+	// Если пользователь авторизован, показываем его имя и кнопки для редактирования профиля и выхода
+	if (isset($_SESSION["user_name"])): ?>
+		<p>Вітаємо, <?php echo htmlspecialchars($_SESSION["user_name"]); ?>! 
+			<a href="profile.php">Переглянути профіль</a> | 
+			<a href="edit_profile.php">Редагувати профіль</a> | 
+			<a href="admin/logout.php">Вийти</a>
+		</p>
 	<?php else: ?>
 		<p><a href="admin/login.php"><button style="padding: 8px 16px; font-size: 14px;">Авторизуватися</button></a></p>
 	<?php endif; ?>
@@ -80,6 +107,20 @@ $user_role = $_SESSION['user_role'];
 			<button>Перейти до профілю</button>
 		</a>
 	<?php endif; ?>
+
+	<form method="GET" style="margin-top: 20px;">
+		<input type="text" name="search" placeholder="Пошук товару..." value="<?= htmlspecialchars($search) ?>">
+
+		<select name="sort">
+			<option value="">Сортування</option>
+			<option value="price_asc" <?= $sort === 'price_asc' ? 'selected' : '' ?>>Ціна: за зростанням</option>
+			<option value="price_desc" <?= $sort === 'price_desc' ? 'selected' : '' ?>>Ціна: за спаданням</option>
+			<option value="name_asc" <?= $sort === 'name_asc' ? 'selected' : '' ?>>Назва: А–Я</option>
+			<option value="name_desc" <?= $sort === 'name_desc' ? 'selected' : '' ?>>Назва: Я–А</option>
+		</select>
+
+		<button type="submit">Знайти</button>
+	</form>
 
 	<?php while ($row = $result->fetch_assoc()): ?>
 		<div style="border: 1px solid #ccc; margin: 10px; padding: 10px;">
