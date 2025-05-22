@@ -58,6 +58,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <!DOCTYPE html>
 <html lang="uk">
 <head>
+<link rel="stylesheet" href="style.css">
+
+<link rel="stylesheet" href="style.css">
+
     <meta charset="UTF-8">
     <title>Редагування профілю</title>
 </head>

@@ -38,6 +38,10 @@ $user_role = $_SESSION['user_role'];
 <!DOCTYPE html>
 <html lang="ru">
 <head>
+<link rel="stylesheet" href="style.css">
+
+<link rel="stylesheet" href="style.css">
+
 	<meta charset="UTF-8">
 	<title>Grizetka — Каталог товарів</title>
 	<link rel="stylesheet" href="style.css">

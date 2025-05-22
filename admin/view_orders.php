@@ -33,8 +33,10 @@ $result = $mysqli->query($query);
 <!DOCTYPE html>
 <html lang="uk">
 <head>
-    <meta charset="UTF-8">
-    <title>Усі замовлення</title>
+<link rel="stylesheet" href="../style.css">
+
+<meta charset="UTF-8">
+<title>Усі замовлення</title>
 </head>
 <body>
     <h2>Список усіх замовлень</h2>

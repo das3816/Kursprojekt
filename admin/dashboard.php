@@ -1,7 +1,6 @@
 <?php
 session_start();
 if (!isset($_SESSION['user_role']) || $_SESSION['user_role'] !== 'admin') {
-    // Якщо користувач не авторизований або не адміністратор, перенаправляємо на сторінку входу
     header('Location: login.php');
     exit;
 }
@@ -10,6 +9,8 @@ if (!isset($_SESSION['user_role']) || $_SESSION['user_role'] !== 'admin') {
 <!DOCTYPE html>
 <html lang="uk">
 <head>
+
+<link rel="stylesheet" href="../style.css">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Адміністративна панель</title>

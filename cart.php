@@ -5,6 +5,10 @@ session_start();
 <!DOCTYPE html>
 <html lang="uk">
 <head>
+<link rel="stylesheet" href="style.css">
+
+<link rel="stylesheet" href="style.css">
+
     <meta charset="UTF-8">
     <title>Кошик</title>
     <script>

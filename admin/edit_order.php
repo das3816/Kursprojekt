@@ -51,6 +51,16 @@ $products = $mysqli->query("SELECT id, name FROM products");
 <!DOCTYPE html>
 <html lang="uk">
 <head>
+
+<link rel="stylesheet" href="../style.css">
+
+
+
+
+<link rel="stylesheet" href="../style.css">
+
+
+
     <meta charset="UTF-8">
     <title>Редагування замовлення</title>
 </head>

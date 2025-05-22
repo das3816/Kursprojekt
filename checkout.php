@@ -15,6 +15,10 @@ foreach ($_SESSION['cart'] as $item) {
 <!DOCTYPE html>
 <html lang="uk">
 <head>
+<link rel="stylesheet" href="style.css">
+
+<link rel="stylesheet" href="style.css">
+
     <meta charset="UTF-8">
     <title>Оформлення замовлення</title>
 </head>

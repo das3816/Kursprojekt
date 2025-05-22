@@ -15,6 +15,16 @@ $result = $mysqli->query($sql);
 <!DOCTYPE html>
 <html lang="uk">
 <head>
+
+<link rel="stylesheet" href="../style.css">
+
+
+
+
+<link rel="stylesheet" href="../style.css">
+
+
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Керування товарами</title>
