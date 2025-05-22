@@ -2,7 +2,7 @@
 session_start();
 
 if (!isset($_SESSION['cart']) || count($_SESSION['cart']) === 0) {
-    echo "Корзина пуста. <a href='index.php'>Вернуться в каталог</a>";
+    echo "Кошик порожній. <a href='index.php'>Повернутися до каталогу</a>";
     exit;
 }
 
@@ -13,32 +13,36 @@ foreach ($_SESSION['cart'] as $item) {
 ?>
 
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="uk">
 <head>
     <meta charset="UTF-8">
-    <title>Оформление заказа</title>
+    <title>Оформлення замовлення</title>
 </head>
 <body>
-<h2>Оформление заказа</h2>
+<h2>Оформлення замовлення</h2>
 
 <form action="process_order.php" method="POST">
-    <label>ФИО:<br>
+    <label>ПІБ:<br>
         <input type="text" name="full_name" required>
+    </label><br><br>
+
+    <label>Електронна пошта:<br>
+        <input type="email" name="email" required>
     </label><br><br>
 
     <label>Телефон:<br>
         <input type="tel" name="phone" required>
     </label><br><br>
 
-    <label>Адрес доставки:<br>
+    <label>Адреса доставки:<br>
         <textarea name="address" required></textarea>
     </label><br><br>
 
-    <h3>Сумма к оплате: <?= htmlspecialchars($total) ?> грн</h3>
+    <h3>Сума до сплати: <?= htmlspecialchars($total) ?> грн</h3>
 
-    <button type="submit">Подтвердить заказ</button>
+    <button type="submit">Підтвердити замовлення</button>
 </form>
 
-<a href="cart.php">← Вернуться в корзину</a>
+<a href="cart.php">← Повернутися до кошика</a>
 </body>
 </html>

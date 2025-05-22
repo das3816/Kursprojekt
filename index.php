@@ -40,36 +40,7 @@ $user_role = $_SESSION['user_role'];
 <head>
 	<meta charset="UTF-8">
 	<title>Grizetka — Каталог товарів</title>
-	<style>
-		.toast {
-			visibility: hidden;
-			min-width: 250px;
-			background-color: #4CAF50;
-			color: white;
-			text-align: center;
-			border-radius: 8px;
-			padding: 16px;
-			position: fixed;
-			z-index: 1000;
-			left: 50%;
-			bottom: 30px;
-			transform: translateX(-50%);
-			box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-			font-family: sans-serif;
-		}
-		.toast.show {
-			visibility: visible;
-			animation: fadein 0.5s, fadeout 0.5s 2.5s;
-		}
-		@keyframes fadein {
-			from {bottom: 0; opacity: 0;}
-			to {bottom: 30px; opacity: 1;}
-		}
-		@keyframes fadeout {
-			from {bottom: 30px; opacity: 1;}
-			to {bottom: 0; opacity: 0;}
-		}
-	</style>
+	<link rel="stylesheet" href="style.css">
 	
 	<script>
 		document.addEventListener("DOMContentLoaded", function () {
@@ -86,7 +57,6 @@ $user_role = $_SESSION['user_role'];
 <body>
 	<h2>Каталог товарів</h2>
 	<?php
-	// Если пользователь авторизован, показываем его имя и кнопки для редактирования профиля и выхода
 	if (isset($_SESSION["user_name"])): ?>
 		<p>Вітаємо, <?php echo htmlspecialchars($_SESSION["user_name"]); ?>! 
 			<a href="profile.php">Переглянути профіль</a> | 
@@ -97,7 +67,6 @@ $user_role = $_SESSION['user_role'];
 		<p><a href="admin/login.php"><button style="padding: 8px 16px; font-size: 14px;">Авторизуватися</button></a></p>
 	<?php endif; ?>
 
-	<!-- Выводим ссылку/кнопку в зависимости от роли -->
 	<?php if ($user_role == 'admin'): ?>
 		<a href="admin/dashboard.php">
 			<button>Перейти до адмін панелі</button>

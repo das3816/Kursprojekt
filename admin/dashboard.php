@@ -20,6 +20,8 @@ if (!isset($_SESSION['user_role']) || $_SESSION['user_role'] !== 'admin') {
         <ul>
             <li><a href="add_product.php">Додати товар</a></li>
             <li><a href="manage_orders.php">Управління замовленнями</a></li>
+            <li><a href="view_orders.php">Переглянути замовлення</a></li>
+            <li><a href="manage_users.php">👥 Керування користувачами</a></li>
             <li><a href="logout.php">Вийти</a></li>
         </ul>
         <a href="../index.php">
